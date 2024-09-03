@@ -1,24 +1,52 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios'
 
 function Register() {
-    const [values, setValues] = useState({
-       
-    })
+    const [values, setValues] = useState({})
+    const [iserr, setErr] = useState(false)
+    const [errmsg, setErrMsg] = useState("")
 
-    const HandleInput =(e)=>{
-        setValues(prev=>({
+
+
+    const navigate = useNavigate();
+
+
+    const HandleInput = (e) => {
+        setValues(prev => ({
             ...prev, [e.target.name]: e.target.value
         }))
-    }   
-    const HandleSubmit =(e)=>{
-        e.preventDefault()
+        setErrMsg("")
     }
+    const HandleSubmit = async (e) => {
+        e.preventDefault()
+        await axios.post('http://localhost:3000/routes/register', {
+            name: values.name,
+            email: values.email,
+            password: values.password
+        })
+        .then((response)=>{
+            response.data.password = null
+            // console.log(response);
+            if(response){
+                navigate('/')
+            }
+
+        }).catch((error)=>{
+            console.log(error.response.data.message);
+            setErr(true)
+            setErrMsg(error.response.data.message)
+        })
+           
+
+
+    }
+
+
     return (
         <>
-            <form action="" onSubmit={HandleSubmit}  className='border-2 border-gray-800 flex flex-col justify-center items-center w-96 h-80 m-auto mt-[20%] rounded-md'>
+            <form action="/routes/register" onSubmit={HandleSubmit} className='border-2 border-gray-800 flex flex-col justify-center items-center w-96 h-80 m-auto mt-[20%] rounded-md'>
                 <h1 className='text-2xl mb-3'>sign Up</h1>
                 <div className='flex flex-col gap-5'>
                     <div>
@@ -26,11 +54,13 @@ function Register() {
                         {/* <p className='text-xs text-red-800'>Error handling </p> */}
                     </div>
                     <div>
-                        <input onChange={HandleInput}  className='rounded-md h-10 w-80 outline-none text-gray-700 bg-gray-200 pl-5' type="email" name="email" placeholder='Email' />
-                        {/* <p className='text-xs text-red-800'>Error handling </p> */}
+                        <input onChange={HandleInput} className='rounded-md h-10 w-80 outline-none text-gray-700 bg-gray-200 pl-5' type="email" name="email" placeholder='Email' />
+                        <p className='text-xs text-red-800'>
+                            {iserr ? errmsg : ""}
+                        </p>
                     </div>
                     <div>
-                        <input onChange={HandleInput}  className='rounded-md h-10 w-80 outline-none text-gray-700 bg-gray-200 pl-5' type="text" name="password" placeholder='password' />
+                        <input onChange={HandleInput} className='rounded-md h-10 w-80 outline-none text-gray-700 bg-gray-200 pl-5' type="text" name="password" placeholder='password' />
                         {/* <p className='text-xs text-red-800'>Error handling </p> */}
                     </div>
                     <div>
