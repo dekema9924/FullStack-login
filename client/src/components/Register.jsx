@@ -1,12 +1,26 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+
 
 function Register() {
     const [values, setValues] = useState({})
     const [iserr, setErr] = useState(false)
     const [errmsg, setErrMsg] = useState("")
+    const [isSuccess, setSuccess] = useState(false)
+    const [successMsg, setSuccessMsg] = useState("")
+
+
+
+    
+
+    const notify = () => toast(successMsg);
+
 
 
 
@@ -28,13 +42,12 @@ function Register() {
         })
         .then((response)=>{
             response.data.password = null
-            // console.log(response);
+            console.log(response);
             if(response){
                 navigate('/')
             }
-
         }).catch((error)=>{
-            console.log(error.response.data.message);
+            console.log(error);
             setErr(true)
             setErrMsg(error.response.data.message)
         })
@@ -42,12 +55,11 @@ function Register() {
 
 
     }
-
-
     return (
         <>
-            <form action="/routes/register" onSubmit={HandleSubmit} className='border-2 border-gray-800 flex flex-col justify-center items-center w-96 h-80 m-auto mt-[20%] rounded-md'>
+            <form action="/routes/register" onSubmit={HandleSubmit} className='border-2 h-96 border-white  flex flex-col justify-center items-center w-96 bg-gray-100 m-auto mt-[20%] rounded-md'>
                 <h1 className='text-2xl mb-3'>sign Up</h1>
+          
                 <div className='flex flex-col gap-5'>
                     <div>
                         <input onChange={HandleInput} className='rounded-md h-10 w-80 outline-none text-gray-700 bg-gray-200 pl-5' type="text" name="name" placeholder='Name' />
@@ -55,7 +67,7 @@ function Register() {
                     </div>
                     <div>
                         <input onChange={HandleInput} className='rounded-md h-10 w-80 outline-none text-gray-700 bg-gray-200 pl-5' type="email" name="email" placeholder='Email' />
-                        <p className='text-xs text-red-800'>
+                        <p className='text-xs text-red-800 ml-5'>
                             {iserr ? errmsg : ""}
                         </p>
                     </div>
@@ -64,10 +76,18 @@ function Register() {
                         {/* <p className='text-xs text-red-800'>Error handling </p> */}
                     </div>
                     <div>
-                        <button className=' w-80 h-10 rounded-md bg-white border-2 border-gray-700 hover:bg-black hover:text-white'>Create Account</button>
-                        <p className='text-sm text-center mt-3 text-gray-600'>Already have an account? <Link className='text-gray-900 underline' to={'/'}>Sign-In</Link></p>
-
+                        <button className=' w-80 h-10 rounded-lg bg-white border-2 hover:bg-blue-400 hover:text-white'>Create Account</button>
+                        <p className='text-sm text-center mt-3 text-gray-600'>Already have an account? <Link className='text-red-900 underline' to={'/'}>Sign-In</Link></p>
                     </div>
+                    {
+                        isSuccess ?  <>
+                           <div>
+                                {notify()}
+                                <ToastContainer />
+                           </div>
+
+                        </> : ""
+                    }
 
                 </div>
             </form>
