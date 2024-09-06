@@ -4,6 +4,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import { Box } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import Cookies from 'js-cookie';
 import axios from 'axios';
 
 function Login() {
@@ -26,12 +27,14 @@ function Login() {
         
        await axios.post('http://localhost:3000/routes/login',{
             email: values.email,
-            password: values.password
-        })
-        .then((res)=>{
-            console.log(res)
-            if(res){
-                navigate('/dashboard')
+            password: values.password,
+            
+        },{withCredentials: true})
+        .then((response)=>{
+            console.log(response)
+            if(response){
+                // Cookies.set('token', response.data.token, { expires: 30000 });
+               navigate('/dashboard')
             }else{
                 navigate('/login')
             }

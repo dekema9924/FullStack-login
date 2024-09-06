@@ -4,12 +4,15 @@ const port = process.env.PORT || 3000;
 require('dotenv').config()
 const route = require('./Routes/routes')
 const mongoose = require('mongoose')
+const cookieParser = require('cookie-parser')
+
 
 
 
 
 //route middleware
 app.use('/routes', route);
+app.use(cookieParser())
 
 
 
