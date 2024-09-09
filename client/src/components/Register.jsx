@@ -1,32 +1,32 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import toast from 'react-hot-toast';
+
 
 
 
 
 function Register() {
+    //variables
     const [values, setValues] = useState({})
     const [iserr, setErr] = useState(false)
     const [errmsg, setErrMsg] = useState("")
     const [isSuccess, setSuccess] = useState(false)
     const [successMsg, setSuccessMsg] = useState("")
-
-
-
-    
-
-    const notify = () => toast(successMsg);
-
-
-
-
     const navigate = useNavigate();
 
+    // useEffect(()=>{
+    //     const notify = () => toast.success("Fetching the Model Do not Close", {
+    //         position: 'bottom-right',
+    //         autoClose: 60000
+    //       });
+    //       notify()
+    // },[isSuccess ])
 
+
+    //functions
     const HandleInput = (e) => {
         setValues(prev => ({
             ...prev, [e.target.name]: e.target.value
@@ -42,14 +42,23 @@ function Register() {
         })
         .then((response)=>{
             response.data.password = null
-            console.log(response);
+            console.log(response.data.message);
             if(response){
-                navigate('/')
+                setSuccess(true)
+                setSuccessMsg(response.data.message)
+                toast.success(response.data.message)
+                setTimeout(()=>{
+                    navigate('/')
+                },2000)
+                
+            
             }
         }).catch((error)=>{
             console.log(error);
             setErr(true)
             setErrMsg(error.response.data.message)
+            toast.error(response.data.message)
+
         })
            
 
@@ -79,15 +88,7 @@ function Register() {
                         <button className=' w-80 h-10 rounded-lg bg-white border-2 hover:bg-blue-400 hover:text-white'>Create Account</button>
                         <p className='text-sm text-center mt-3 text-gray-600'>Already have an account? <Link className='text-red-900 underline' to={'/'}>Sign-In</Link></p>
                     </div>
-                    {
-                        isSuccess ?  <>
-                           <div>
-                                {notify()}
-                                <ToastContainer />
-                           </div>
 
-                        </> : ""
-                    }
 
                 </div>
             </form>
