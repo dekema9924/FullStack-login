@@ -86,7 +86,11 @@ route.get('/dashboard', (req,res)=>{
                 Users.findById(decoded.id)
                 .then((result)=>{
                     result.password = null
-                    res.json(result)
+                    res.json({
+                        result,
+                        isloggedin: true,
+                        authenticated: true
+                    })
                 })
                
             }))
@@ -94,7 +98,11 @@ route.get('/dashboard', (req,res)=>{
             console.log(err)
         }
  }else{
-    res.status(400).json({error: 'invalid token'})
+    res.status(400).json({
+        error: 'invalid token',
+        isloggedin: false,
+        authenticated: false,
+    })
  }
 
 })

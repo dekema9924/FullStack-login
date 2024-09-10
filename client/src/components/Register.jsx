@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios'
@@ -16,14 +16,6 @@ function Register() {
     const [isSuccess, setSuccess] = useState(false)
     const [successMsg, setSuccessMsg] = useState("")
     const navigate = useNavigate();
-
-    // useEffect(()=>{
-    //     const notify = () => toast.success("Fetching the Model Do not Close", {
-    //         position: 'bottom-right',
-    //         autoClose: 60000
-    //       });
-    //       notify()
-    // },[isSuccess ])
 
 
     //functions
@@ -48,7 +40,7 @@ function Register() {
                 setSuccessMsg(response.data.message)
                 toast.success(response.data.message)
                 setTimeout(()=>{
-                    navigate('/')
+                    navigate('/login')
                 },2000)
                 
             

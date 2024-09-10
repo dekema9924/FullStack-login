@@ -1,10 +1,7 @@
 
-import React, { useEffect } from 'react'
-import ErrorIcon from '@mui/icons-material/Error';
-import { Box } from '@mui/material';
+import React from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import Cookies from 'js-cookie';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
