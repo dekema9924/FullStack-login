@@ -27,7 +27,7 @@ function Register() {
     }
     const HandleSubmit = async (e) => {
         e.preventDefault()
-        await axios.post('http://localhost:3000/routes/register', {
+        await axios.post('https://loginbackend-rzkg.onrender.com/routes/register', {
             name: values.name,
             email: values.email,
             password: values.password
@@ -40,7 +40,7 @@ function Register() {
                 setSuccessMsg(response.data.message)
                 toast.success(response.data.message)
                 setTimeout(()=>{
-                    navigate('/login')
+                    navigate('/')
                 },2000)
                 
             

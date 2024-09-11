@@ -21,7 +21,7 @@ function Dashboard() {
 
 
   useEffect(() => {
-    axios('http://localhost:3000/routes/dashboard', { withCredentials: true })
+    axios('https://loginbackend-rzkg.onrender.com//routes/dashboard', { withCredentials: true })
       .then((response) => {
         setLoading(false)
         setUsername(response.data.result.name)
